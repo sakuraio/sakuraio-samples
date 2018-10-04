@@ -2,7 +2,7 @@ import csv
 import json
 from urllib import request
 from urllib.error import HTTPError
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin, urlparse, quote_plus
 from optparse import OptionParser
 
 HEADER = ["id", "module", "channel", "type", "value", "datetime"]
@@ -15,17 +15,14 @@ def parse_options():
     return parser.parse_args()
 
 def write_csv(url, recursive=False, writer=None, token=""):
-    try:
-        response = fetch(url)
-    except HTTPError as error:
-        print(error)
+    response = fetch(url)
     if recursive:
         write_rows(writer, response)
         cursor = next_cursor(response)
         if cursor is not None:
             print(f"next cursor exists...{cursor}")
             ret = urlparse(url)
-            next_url = f"{ret.scheme}://{ret.netloc}{ret.path}?cursor={cursor}&token={token}"
+            next_url = f"{ret.scheme}://{ret.netloc}{ret.path}?cursor={quote_plus(cursor)}&token={token}"
             write_csv(next_url, recursive=True, writer=writer, token=token)
     else:
         write_rows(writer, response)

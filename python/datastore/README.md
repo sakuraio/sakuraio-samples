@@ -16,6 +16,12 @@ $ pwd
 /path/to/sakuraio-samples/python/datastore/
 ```
 
+- t のオプションに、
+
+```
+$ python main.py -t <連携サービスのトークン>
+```
+
 - `-r` をつけることで全件取得して書き込みます。
 
 ```
