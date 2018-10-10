@@ -4,3 +4,8 @@
 
 - C#
   - [websocket](./csharp/websocket)
+  - [datastore](./csharp/datastore)
+- js
+  - [datastore](./js/datastore)
+- Python
+  - [websocket](./python/websocket)
