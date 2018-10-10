@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>sakura.io DataStore取得サンプル</h1>
+      <ul>
+        <li>sakura.ioでDataStoreのトークンを取得する必要があります。
+        <li>
+          詳しい説明についてはAPIリファレンスをご覧ください。
+          <a href="https://api.sakura.io/datastore/v1/docs/">sakura.io DataStore API リファレンス</a>
+        <li>Chrome, Firefox, Edgeで動作確認を行っています。
+      </ul>
+    </header>
+    <div>
+      <label>
+        URL:
+        <input id="url" type="text" value="https://api.sakura.io/datastore/v1/messages" />
+      </label>
+    </div>
+    <div>
+      <label>
+        Token(必須):
+        <input id="token" type="text" value="" />
+      </label>
+    </div>
+    <div>
+      <label>
+        取得件数:
+        <input id="size" type="number" value="10" />
+      </label>
+    </div>
+    <div>
+      <label>
+        after(ISO 8601形式):
+        <input id="after" type="text" value="" />
+      </label>
+    </div>
+    <div>
+      <label>
+        before(ISO 8601形式):
+        <input id="before" type="text" value="" />
+      </label>
+    </div>
+    <div>
+      <label>
+        Cursor:
+        <input id="cursor" type="text" value="" />
+        <button id="use-last-cursor" disabled>最後に受信したCursorを使用する</button>
+      </label>
+    </div>
+    <button id="fetch">取得</button>
+    
+    <pre id="result"></pre>
+  </div>
+</body>
+
+<script>
+let lastCursor;
+
+async function fetchDataStore() {
+  let result = document.getElementById('result');
+  result.innerText = '取得中…';
+
+  // 各入力フィールドの値を取得
+  let url = document.getElementById('url').value;
+  let token = document.getElementById('token').value;
+  let size = document.getElementById('size').value;
+  let after = document.getElementById('after').value;
+  let before = document.getElementById('before').value;
+  let cursor = document.getElementById('cursor').value;
+  console.log('取得', url, token, size, after, before, cursor);
+  
+  // リクエストのクエリ文字列を生成
+  let query = `token=${token}&size=${size}&after=${after}&before=${before}&cursor=${encodeURIComponent(cursor)}`;
+  let reqUrl = url + '?' + query;
+
+  try {
+    // APIからデータを取得し、結果をJSONとして取り扱う
+    let res = await fetch(reqUrl).then(res => res.json());
+    console.log(res);
+
+    result.innerText = JSON.stringify(res, null, 2);
+
+    // 受信したカーソルを保存
+    if (res.meta) {
+      lastCursor = res.meta.cursor;
+      document.getElementById('use-last-cursor').disabled = false;
+    }
+  } catch (e) {
+    result.innerText = '取得エラー';
+    throw e;
+  }
+}
+
+document
+  .getElementById('fetch')
+  .addEventListener('click', fetchDataStore);
+
+
+function setLastCursor () {
+  if (lastCursor) {
+    document.getElementById('cursor').value = lastCursor;
+  }
+}
+
+document
+  .getElementById('use-last-cursor')
+  .addEventListener('click', setLastCursor);
+
+</script>
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #eee;
+}
+.container {
+  background: white;
+  max-width: 800px;
+  margin: auto;
+  min-height: 100%;
+  padding: 3rem;
+}
+
+header h1 {
+  font-size: 1.7rem;
+}
+
+pre#result {
+  border: 2px solid #e4e4e4;
+  padding: 1rem;
+}
+</style>
+
+</html>
