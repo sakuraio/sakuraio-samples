@@ -8,4 +8,4 @@
 - js
   - [datastore](./js/datastore)
 - Python
-  - [websocket](./python/websocket)
+  - [websocket](./python/ws)
