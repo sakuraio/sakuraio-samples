@@ -27,3 +27,11 @@ $ python main.py -t <連携サービスのトークン>
 ```
 $ python main.py -t <連携サービスのトークン> -r
 ```
+
+- `datastore.csv` がダウンロードされます。
+
+```
+$ ls 
+
+datastore.csv
+```
