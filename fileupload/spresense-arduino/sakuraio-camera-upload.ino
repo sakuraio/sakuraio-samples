@@ -1,11 +1,13 @@
 #include <Camera.h>
 #include <SakuraIO.h>
+#include <Wire.h>
 
 //SakuraIO_SPI sakuraio(10);
 SakuraIO_I2C sakuraio;
 
 
 void setup() {
+  delay(1000);
   Serial.begin(115200);
 
   theCamera.begin();
@@ -15,6 +17,10 @@ void setup() {
      CAM_IMGSIZE_VGA_H,
      CAM_IMGSIZE_VGA_V,
      CAM_IMAGE_PIX_FMT_JPG);
+
+  Wire.setClock(100000);
+  Wire.begin();
+  delay(3000);
  
   Serial.print("Waiting to come online");
   for(;;){
@@ -135,7 +141,5 @@ void loop() {
   uint32_t time = millis() - start;
   Serial.println(time);
 
-  while(1){
-    delay(5000);
-  }
+  delay(5000);
 }
