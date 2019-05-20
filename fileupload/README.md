@@ -28,8 +28,22 @@ bash send-cam.sh
 
 ## 受信側 (WebSocketサービス連携を利用)
 
-モジュールから送信されたファイルを受信し、 `モジュールID-時刻.bin` としてカレントディレクトリに保存する
+モジュールから送信されたファイルをWebSocket経由で受信し、 `モジュールID-時刻.bin` としてカレントディレクトリに保存するサンプルです。
+
+### Linux
 
 ```bash
-go run server.go wss://api.sakura.io/ws/v1/3c7ee813-8d5b-4a11-9b22-xxxxxxxxxxxx
+./server/build/server_linux_amd64 wss://api.sakura.io/ws/v1/3c7ee813-8d5b-4a11-9b22-xxxxxxxxxxxx
+```
+
+### macOS
+
+```bash
+./server/build/server_darwin_amd64 wss://api.sakura.io/ws/v1/3c7ee813-8d5b-4a11-9b22-xxxxxxxxxxxx
+```
+
+### Windows
+
+```bash
+.\server\build\server_windows_amd64.exe wss://api.sakura.io/ws/v1/3c7ee813-8d5b-4a11-9b22-xxxxxxxxxxxx
 ```
